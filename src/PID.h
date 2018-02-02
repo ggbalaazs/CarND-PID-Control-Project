@@ -17,6 +17,8 @@ public:
   double Ki;
   double Kd;
 
+  bool first_run;
+
   /*
   * Constructor
   */
@@ -30,17 +32,17 @@ public:
   /*
   * Initialize PID.
   */
-  void Init(double Kp, double Ki, double Kd);
+  void init(double Kp, double Ki, double Kd);
 
   /*
   * Update the PID error variables given cross track error.
   */
-  void UpdateError(double cte);
+  void updateError(double cte);
 
   /*
   * Calculate the total PID error.
   */
-  double TotalError();
+  double totalError();
 };
 
 #endif /* PID_H */
