@@ -9,11 +9,13 @@ This project is about implementing a PID controller in C++ to maneuver the vehic
 
 ## Reflection
 
-Term P is a proportional feedback of the cross track error (difference between road center and actual position). Term I is integral component that is supposed to correct possible offset errors over time which is actually not present here. Term D is differential term that is used to dampen oscillation.
+PID is a commonly used controller which uses the error between desired and measured values to provide a 3-term feedback for minimizing the error in the long run. In this project the cross track error (difference between road center and actual position) is the target to be minimized. The controller should adjust the steering value in the first place, but throttle can be also changed. Term P is the proportional feedback of the cross track error: the larger the error, the larger the proportional correction. This was the key factor to steer back the vehicle to its central position. Term I is the integral component that makes adjustment based on many recent errors. It is supposed to correct possible offset errors over time. The integral term was not really a necessity in this project, the simulator has no offset errors that need to be handled. Term D is the derivative term that takes into account the rate of change of errors. This works against the proportional term: the more rapid the change, the greater its dampening effect. A carefully chosen proportional term was enough in itself to recover central position when driving in straight line. But as soon as there was change in driving direction, the car was starting to oscillate after the turn. With additional derivative term the dampening stopped the oscillation.
 
-At first I experimented with Kp value, Ki and Kd was set to 0. The effect of small errors on steering was too much, exponential dampening seemed like a good idea. Steering value needed to be limited as well, 0.2 radians was the starting value. I set constant throttle to 0.3 and manually tuned parameters of Kp and the exponent.
+At first I experimented with Kp value, Ki and Kd was set to 0. The effect of small errors on steering was too much, exponential diminishing seemed like a good idea. Steering value needed to be limited as well, 0.2 radians was the starting value. I set constant throttle to 0.3 and manually tuned parameters of Kp and the exponent. I settled for the value 0.18 as Kp.
 
-The car went well until first turn, but after that differential component was required to stop oscillation. So I manually tuned Kd. There was not any constant error that needed to be integrated out, anyway I added a very small Ki.
+The car went well until first turn, but after that derivative component was required to dampen oscillation. So I manually tuned Kd. Setting Kd to 6.0 was sufficient.
+
+There was not any constant error that needed to be integrated out, but for small residual errors integral component may be still useful. Anyway I added a very small Ki, 0.0001.
 
 The second turn on the map needed higher steering limit. Later I increased the maximum speed and added braking at near-limit steering.
 
